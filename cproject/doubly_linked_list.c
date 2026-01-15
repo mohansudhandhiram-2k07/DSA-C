@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<time.h>
 
 struct node {
     int data;
@@ -91,6 +92,7 @@ int main()
 
             case 8:
                 create_loop(head);
+                break;
 
 
             case 9:
@@ -320,5 +322,29 @@ void modify_linked_list(struct node* head)
 
 void create_loop(struct node* head)
 {
-    
+    if(head==NULL)
+    {
+        printf("NO LINKED LIST FOUND!");
+        return;
+    }
+    if(head->next == NULL)
+    {
+        printf("ONLY ONE NODE FOUND!");
+        return;
+    }
+    int len = node_length(head);
+    int random_position = (rand()%len)+1;
+    struct node* loop_start = head;
+    for(int i=1;i<random_position;i++)
+    {
+        loop_start = loop_start->next;
+
+    }
+    struct node* tail = head;
+    while(tail->next != NULL)
+    {
+        tail = tail->next;
+    }
+    tail->next = loop_start;
+    printf("LOOP IS CREATED!!\nDO NOT PRINT/DISPLAY ");
 }
