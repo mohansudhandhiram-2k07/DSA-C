@@ -16,7 +16,7 @@ struct node * del_node(struct node *head);
 int node_length(struct node *head);
 struct node* search(struct node* head,int value);
 void modify_linked_list(struct node* head);
-
+void create_loop(struct node* head);
 
 int main()
 {
@@ -36,7 +36,8 @@ int main()
         printf("5. Get Length\n");
         printf("6. Search\n");
         printf("7. modify linked list\n");
-        printf("8. Exit\n");
+        printf("8. create loop to test floyd logic\n");
+        printf("9. Exit\n");
         printf("***************************\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -88,8 +89,11 @@ int main()
                 modify_linked_list(head);
                 break;
 
-
             case 8:
+                create_loop(head);
+
+
+            case 9:
                 printf("Exiting... \n");
                 exit(0); 
                 break;
@@ -312,4 +316,9 @@ void modify_linked_list(struct node* head)
     scanf("%d",&new_data);
     add_old_data->data = new_data;
     printf("MODIFICATION SUCCESFUL!!");
+}
+
+void create_loop(struct node* head)
+{
+    
 }
