@@ -18,6 +18,7 @@ int node_length(struct node *head);
 struct node* search(struct node* head,int value);
 void modify_linked_list(struct node* head);
 void create_loop(struct node* head);
+void floyd_cycle(struct node* head);
 
 int main()
 {
@@ -38,7 +39,8 @@ int main()
         printf("6. Search\n");
         printf("7. modify linked list\n");
         printf("8. create loop to test floyd logic\n");
-        printf("9. Exit\n");
+        printf("9. check for loop\n");
+        printf("10. Exit\n");
         printf("***************************\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -96,6 +98,10 @@ int main()
 
 
             case 9:
+                floyd_cycle(head);
+                break;
+
+            case 10:
                 printf("Exiting... \n");
                 exit(0); 
                 break;
@@ -347,4 +353,25 @@ void create_loop(struct node* head)
     }
     tail->next = loop_start;
     printf("LOOP IS CREATED!!\nDO NOT PRINT/DISPLAY ");
+}
+
+void floyd_cycle(struct node* head)
+{
+    struct node* fast = head;
+    struct node* slow = head;
+    while(fast != NULL && fast->next !=NULL)
+        {
+            
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast)
+            {
+                printf("loop detected at: %d ",fast->data);
+                return;
+            }
+
+        }
+    printf("NO LOOP DETECTED!");
+    return;    
+
 }
