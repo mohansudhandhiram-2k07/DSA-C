@@ -366,6 +366,13 @@ void floyd_cycle(struct node* head)
             fast = fast->next->next;
             if(slow == fast)
             {
+                slow = head;
+                while(slow!=head)
+                {
+                    slow = slow->next;
+                    fast = fast->next;
+
+                }
                 printf("loop detected at: %d ",fast->data);
                 return;
             }
