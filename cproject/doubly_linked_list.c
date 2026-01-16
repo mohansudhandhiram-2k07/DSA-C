@@ -367,7 +367,7 @@ void floyd_cycle(struct node* head)
             if(slow == fast)
             {
                 slow = head;
-                while(slow!=head)
+                while(slow!=fast)
                 {
                     slow = slow->next;
                     fast = fast->next;
