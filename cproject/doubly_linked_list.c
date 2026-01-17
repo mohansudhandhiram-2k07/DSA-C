@@ -8,6 +8,14 @@ struct node {
     struct node *prev;
 };
 
+typedef enum {
+    LL_OK = 0,              
+    LL_EMPTY,               
+    L_NULL_PTR,            
+    LL_ALLOC_FAIL,         
+    LL_NOT_FOUND           
+} LL_Status;
+
 struct node* create_list();
 struct node* insert_node(struct node *head);
 struct node* get_new_node(int value); 
