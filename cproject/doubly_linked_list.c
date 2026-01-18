@@ -11,13 +11,13 @@ struct node {
 typedef enum {
     LL_OK = 0,              
     LL_EMPTY,               
-    L_NULL_PTR,            
+    LL_NULL_PTR,            
     LL_ALLOC_FAIL,         
     LL_NOT_FOUND           
-} LL_Status;
+} LL_STATUS;
 
 struct node* create_list();
-struct node* insert_node(struct node *head);
+LL_STATUS insert_node(struct node **head,int value,int pos);
 struct node* get_new_node(int value); 
 int get_data();
 void print_node(struct node* head);
@@ -64,7 +64,34 @@ int main()
                 break;
 
             case 2:
-                head = insert_node(head);
+                {int pos,value;
+                printf("WHERE DO YOU WANT TO INSERT THE NODE?\n");
+                scanf("%d",&pos);
+                printf("ENTER THE VALUE TO INSERT");
+                scanf("%d",&value);
+                LL_STATUS status = insert_node( &head,value,pos);
+                switch(status)
+                {
+                    case LL_OK:
+                        printf("LINKED LIST CREATED SUCCESFULLY!!");
+                        break;
+                    case LL_EMPTY:
+                        printf("NO LIINKED LIST FOUND!!\nCREATE ONE!");
+                        break;
+                    case LL_NULL_PTR:
+                        printf("UNEXPECTED NULL POINTER!!");
+                        break;
+                    case LL_ALLOC_FAIL:
+                        printf("MEMORY FULL(MALLOC  FAILED!)\n");
+                        break;
+                    case LL_NOT_FOUND:
+                        printf("INVALID POSITION!!\nOUT OF BOUNDS\n");
+                        break;
+                    default:
+                        printf("UNKNOWN ERROR OCCURED\n");
+                        break;
+                }
+                }
                 break;
 
             case 3:
@@ -158,40 +185,40 @@ struct node* create_list()
 }
 
 
-struct node* insert_node(struct node *head)
+LL_STATUS insert_node(struct node **head,int value,int pos)
 {
-    int pos;
-    printf("\nWHERE DO YOU WANT TO INSERT THE NODE (Position): ");
-    scanf("%d", &pos);
-    if(pos<0 || pos>node_length(head))
+    
+    
+    if(pos<0 || pos>node_length(*head)+1)
     {
-        printf("!!INVALID POSITION!!");
-        return head;
+        return LL_NOT_FOUND;
     }
-    printf("ENTER DATA FOR NEW NODE: ");
-    int val;
-    scanf("%d", &val);
-    struct node *newnode = get_new_node(val); 
+    struct node * value_of_new_node = get_new_node(value);
+    if(value_of_new_node == NULL)
+    {
+        return LL_ALLOC_FAIL;
+    }
+    struct node *newnode = value_of_new_node; 
     if(pos == 1) 
     {
-        newnode->next = head;
-        if(head != NULL) 
+        newnode->next = *head;
+        if(*head != NULL) 
         {
-            head->prev = newnode;
+            (*head)->prev = newnode;
         }
-        head = newnode; 
-        return head;    
+        *head = newnode; 
+        return LL_OK;    
     }
 
-    struct node* temp = head;
+    struct node* temp = *head;
     for(int i = 1; i < pos - 1 && temp != NULL; i++) 
     {
         temp = temp->next;
     }
     if(temp == NULL) 
     {
-        printf("INVALID POSITION!\n");
-        return head;
+        free(newnode);
+        return LL_NOT_FOUND;
     }
     newnode->next = temp->next; 
     newnode->prev = temp;       
@@ -202,7 +229,7 @@ struct node* insert_node(struct node *head)
     }
     temp->next = newnode;       
 
-    return head;
+    return LL_OK;
 }
 
 int get_data()
