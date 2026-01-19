@@ -151,6 +151,11 @@ int main()
 
 struct node* get_new_node(int value) {
     struct node *newnode = malloc(sizeof(struct node));
+    if(newnode == NULL)
+    {
+        printf("NO MEMORY ALLOCATED!\n");
+        return NULL;
+    }
     newnode->data = value;
     newnode->next = NULL;
     newnode->prev = NULL;
@@ -336,7 +341,7 @@ struct node *search(struct node* head, int value)
     {
         printf("NO LINKED LIST FOUND!\nPRESS '1' TO CREATE A LINKED LIST");
     }
-    return 0;
+    return NULL;
 }
 
 void modify_linked_list(struct node* head)
