@@ -1,9 +1,9 @@
 
-SRC_DIR := cproject
+SRC_DIR := linked-lists
 BUILD_DIR := cbuild
 
 CC := gcc
-CFLAGS := -Wall -Wextra -g
+CFLAGS := -Wall -Wextra -g 
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 
 EXES := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%, $(SRCS))
