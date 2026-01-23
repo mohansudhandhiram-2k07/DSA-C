@@ -23,10 +23,10 @@ int main()
 		display(head);
 		reverse(&head,&tail);
 		display(head);
-		/*pos(&head,&tail);
+		pos(&head,&tail);
 		display(head);
-		del(&head,&tail);
-		display(head);*/
+		/*del(&head,&tail);
+		display(head);*/ 
 		return 0;
 }
 
