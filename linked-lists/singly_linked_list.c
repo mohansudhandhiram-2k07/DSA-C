@@ -6,7 +6,7 @@ struct node
 {
     int data;
     struct node* next;
-}
+};
 
 struct node* create_list();
 struct node* create_node();
@@ -51,7 +51,7 @@ struct node* create_list()
 
 struct node* create_node()
 {
-    struct node* new_node = (struct node)malloc(sizeof(struct node));
+    struct node* new_node = (struct node *)malloc(sizeof(struct node));
     new_node->next = NULL;
     new_node->data = get_data();
     return new_node;
