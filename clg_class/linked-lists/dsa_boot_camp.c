@@ -211,7 +211,4 @@ void reverse(struct node** head,struct node** tail)
 
 	}
 	*head = prev;
-	
-
-
 }

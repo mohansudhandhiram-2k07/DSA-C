@@ -142,7 +142,7 @@ int main()
                 break;
 
             default:
-                printf("Invalid Choice! Try 1-6.\n");
+                printf("Invalid Choice! Try 1-10.\n");
         }
     }
     return 0;
