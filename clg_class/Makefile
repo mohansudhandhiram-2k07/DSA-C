@@ -5,28 +5,30 @@ BUILD_DIR := cbuild
 CC := gcc
 CFLAGS := -Wall -Wextra -g 
 
-# 1. Collect all .c files from all directories
-SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
+# 1. Collect all .c files using absolute-style wildcards
+SRCS := $(wildcard linked-lists/*.c) $(wildcard stack/*.c)
 
-# 2. Generate executable paths (e.g., linked-lists/main.c -> cbuild/linked-lists/main)
-EXES := $(patsubst %.c, $(BUILD_DIR)/%, $(SRCS))
+# 2. Flatten the output names
+# This turns 'stack/stack_using_array.c' into 'cbuild/stack_using_array'
+EXES := $(addprefix $(BUILD_DIR)/, $(patsubst %.c,%,$(notdir $(SRCS))))
 
 all: $(EXES)
 
-# 3. The Pattern Rule
-# Matches 'cbuild/dir/file' to 'dir/file.c'
+# 3. Use VPATH so Make can find files inside the subdirectories
+VPATH := $(SRC_DIRS)
+
+# 4. Pattern Rule
+# Note: we use $(notdir $<) to ensure the compiler gets the right filename from VPATH
 $(BUILD_DIR)/%: %.c
-	@mkdir -p $(dir $@)
-	@echo "Building $@..."
+	@mkdir -p $(BUILD_DIR)
+	@echo "Building $@ from $<..."
 	$(CC) $(CFLAGS) $< -o $@
 
-# 4. The Run Command
-# Usage: make run TARGET=stack/my_file
+# 5. Run Command
 run: all
 	@if [ -z "$(TARGET)" ]; then \
-		echo "Error: Specify TARGET (e.g., make run TARGET=stack/filename)"; \
+		echo "Error: Specify TARGET (e.g., make run TARGET=stack_using_array)"; \
 	else \
-		echo "Executing $(BUILD_DIR)/$(TARGET)..."; \
 		./$(BUILD_DIR)/$(TARGET); \
 	fi
 
