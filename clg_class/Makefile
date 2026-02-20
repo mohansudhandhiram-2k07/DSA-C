@@ -1,39 +1,36 @@
-# Define multiple source directories
-SRC_DIRS := linked-lists stack
-BUILD_DIR := cbuild
-
 CC := gcc
-CFLAGS := -Wall -Wextra -g 
+CFLAGS := -Wall -Wextra -g
+BUILD_DIR := cbuild
+SRC_DIRS := linked-lists stack queue
 
-# 1. Collect all .c files using absolute-style wildcards
-SRCS := $(wildcard linked-lists/*.c) $(wildcard stack/*.c)
+# 1. Collect sources with paths
+SRCS := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
 
-# 2. Flatten the output names
-# This turns 'stack/stack_using_array.c' into 'cbuild/stack_using_array'
-EXES := $(addprefix $(BUILD_DIR)/, $(patsubst %.c,%,$(notdir $(SRCS))))
+# 2. Generate executable paths: cbuild/filename (no extension)
+EXES := $(patsubst %.c,$(BUILD_DIR)/%,$(notdir $(SRCS)))
 
 all: $(EXES)
 
-# 3. Use VPATH so Make can find files inside the subdirectories
-VPATH := $(SRC_DIRS)
+# 3. Explicit rules for each directory to ensure correct mapping
+define BOLD_RULE
+$(BUILD_DIR)/%: $(1)/%.c
+	@mkdir -p $$(BUILD_DIR)
+	@echo "Compiling: $$< -> $$@"
+	$$(CC) $$(CFLAGS) $$< -o $$@
+endef
 
-# 4. Pattern Rule
-# Note: we use $(notdir $<) to ensure the compiler gets the right filename from VPATH
-$(BUILD_DIR)/%: %.c
-	@mkdir -p $(BUILD_DIR)
-	@echo "Building $@ from $<..."
-	$(CC) $(CFLAGS) $< -o $@
+# Generate rules for every directory in SRC_DIRS
+$(foreach dir,$(SRC_DIRS),$(eval $(call BOLD_RULE,$(dir))))
 
-# 5. Run Command
 run: all
 	@if [ -z "$(TARGET)" ]; then \
-		echo "Error: Specify TARGET (e.g., make run TARGET=stack_using_array)"; \
+		echo "Usage: make run TARGET=stack_using_array"; \
 	else \
 		./$(BUILD_DIR)/$(TARGET); \
 	fi
 
 clean:
-	@echo "Cleaning artifacts..."
+	@echo "Cleaning $(BUILD_DIR)..."
 	@rm -rf $(BUILD_DIR)
 
 .PHONY: all clean run
