@@ -1,7 +1,7 @@
 CC := gcc
 CFLAGS := -Wall -Wextra -g
 BUILD_DIR := cbuild
-SRC_DIRS := linked-lists stack queue
+SRC_DIRS := linked-lists stack queue tree 
 
 # 1. Collect sources with paths
 SRCS := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
