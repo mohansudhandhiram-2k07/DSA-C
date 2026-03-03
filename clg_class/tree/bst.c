@@ -11,6 +11,7 @@ void display_inorder(struct tree *root);
 struct tree* create_node(int data);
 struct tree *create_tree(struct tree *root,int data);
 void display_preorder(struct tree *root);
+void display_post_order(struct tree *root);
 
 int main()
 {   struct tree *root = NULL;
@@ -21,6 +22,7 @@ int main()
     display_inorder(root);
     printf("\n");
     display_preorder(root);
+    display_post_order(root);
 
     return 0;
 }
@@ -77,3 +79,13 @@ void display_preorder(struct tree *root)
     
     return;
 }
+ void display_post_order(struct tree *root)
+ {
+    if(root==NULL)
+    {
+        return;
+    }
+    display_post_order(root->left);
+    display_post_order(root->right);
+    printf("%d ",root->data);
+ }
