@@ -1,10 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-struct tree
-{
+struct __attribute__((packed)) tree {
     int data;
-    struct tree *left,*right;
+    struct tree *left, *right;
 };
 
 void display_inorder(struct tree *root);
