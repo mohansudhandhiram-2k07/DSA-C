@@ -20,4 +20,4 @@ struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p,
         return root;
     }
     return (left_signal != NULL) ? left_signal : right_signal;
-}
+}   
